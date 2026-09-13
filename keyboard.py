@@ -13,16 +13,21 @@ reload_sound = pygame.mixer.Sound(SOUND_RELOAD)
 
 ignored_keys = [keyboard.Key.space, keyboard.Key.backspace]
 
-def mute():
-    pygame.mixer.pause()
-    print("Muted!\n")
+is_muted = False
 
-def unmute():
-    pygame.mixer.unpause()
-    print("Unmute!\n")
+def toggle_mute():
+    global is_muted
+    if not is_muted:
+        pygame.mixer.stop()
+        is_muted = True
+        print("muted\n")
 
-pause = keyboard.HotKey(keyboard.HotKey.parse('<ctrl>+1'), mute)
-unpause = keyboard.HotKey(keyboard.HotKey.parse('<ctrl>+1'), unmute)
+    else:
+        is_muted = False
+        print("unmuted\n")
+
+toggle_key = keyboard.HotKey(keyboard.HotKey.parse('<ctrl>+1'), toggle_mute)
+
 is_ctrl_pressed = False
 
 def handle_press(key):
@@ -33,14 +38,15 @@ def handle_press(key):
         is_ctrl_pressed = True
 
     canonical_key = listener.canonical(key)
-    pause.press(canonical_key)
+    toggle_key.press(canonical_key)
 
-    if is_ctrl_pressed:
+    if is_ctrl_pressed or key in ignored_keys:
         return
 
-    if key in ignored_keys:
+    if is_muted:
         return
 
+    
     if key == keyboard.Key.enter:
         pygame.mixer.Sound.play(reload_sound)
         return
@@ -48,8 +54,13 @@ def handle_press(key):
     pygame.mixer.Sound.play(shot_sound)
 
 def handle_release(key):
+    global is_ctrl_pressed
+
+    if key in (keyboard.Key.ctrl, keyboard.Key.ctrl_l, keyboard.Key.ctrl_r):
+        is_ctrl_pressed=False
+
     canonical_key = listener.canonical(key)
-    pause.release(canonical_key)
+    toggle_key.release(canonical_key)
 
 listener = keyboard.Listener(on_press=handle_press, on_release=handle_release)
 
