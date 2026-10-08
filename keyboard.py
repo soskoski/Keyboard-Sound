@@ -7,14 +7,14 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SOUND_SHOT =  os.path.join(BASE_DIR, "audio/gunshot.mp3")
 SOUND_RELOAD = os.path.join(BASE_DIR, "audio/reload.mp3")
 
-SOUND_TYPEWRITTER = os.path.join(BASE_DIR, "audio/typing_sound.mp3")
-SOUND_TYPEWRITTER_BELL = os.path.join(BASE_DIR, "audio/typewritter_bell.mp3")
+SOUND_TYPEWRITER = os.path.join(BASE_DIR, "audio/typing_sound.mp3")
+SOUND_TYPEWRITER_BELL = os.path.join(BASE_DIR, "audio/typewritter_bell.mp3")
 
 pygame.mixer.init()
 shot_sound = pygame.mixer.Sound(SOUND_SHOT)
 reload_sound = pygame.mixer.Sound(SOUND_RELOAD)
-typewritter_sound = pygame.mixer.Sound(SOUND_TYPEWRITTER)
-typewritter_bell_sound = pygame.mixer.Sound(SOUND_TYPEWRITTER_BELL)
+typewriter_sound = pygame.mixer.Sound(SOUND_TYPEWRITER)
+typewriter_bell_sound = pygame.mixer.Sound(SOUND_TYPEWRITER_BELL)
 
 ignored_keys = [keyboard.Key.space, keyboard.Key.backspace]
 
@@ -44,10 +44,10 @@ def set_gunshot_mode():
     sound_state = "gunshot"
     print("Switched to gunshot mode\n")
 
-def set_typewritter_mode():
+def set_typewriter_mode():
     global sound_state
-    sound_state = "typewritter"
-    print("Switched to typewritter mode\n")
+    sound_state = "typewriter"
+    print("Switched to typewriter mode\n")
 
 def gunshot_sound_func(key):
     if key == keyboard.Key.enter:
@@ -55,15 +55,15 @@ def gunshot_sound_func(key):
     else:
         pygame.mixer.Sound.play(shot_sound)
 
-def typewritter_sound_func(key):
+def typewriter_sound_func(key):
     if key == keyboard.Key.enter:
-        pygame.mixer.Sound.play(typewritter_bell_sound)
+        pygame.mixer.Sound.play(typewriter_bell_sound)
 
     else:
-        pygame.mixer.Sound.play(typewritter_sound)
+        pygame.mixer.Sound.play(typewriter_sound)
 
 gunshot_key = keyboard.HotKey(keyboard.HotKey.parse('<ctrl>+2'), set_gunshot_mode)
-type_key = keyboard.HotKey(keyboard.HotKey.parse('<ctrl>+3'), set_typewritter_mode)
+type_key = keyboard.HotKey(keyboard.HotKey.parse('<ctrl>+3'), set_typewriter_mode)
 
 is_ctrl_pressed = False
 
@@ -87,8 +87,8 @@ def handle_press(key):
 
     if sound_state == "gunshot":
         gunshot_sound_func(key)
-    elif sound_state == "typewritter":
-        typewritter_sound_func(key)
+    elif sound_state == "typewriter":
+        typewriter_sound_func(key)
 
 
 def handle_release(key):
