@@ -20,6 +20,10 @@ ignored_keys = [keyboard.Key.space, keyboard.Key.backspace]
 
 is_muted = False
 
+print("<ctrl+1> is to toggle mute")
+print("<ctrl+2> is to switch to gunshot")
+print("<ctrl+3> is to switch to typewriter")
+
 def toggle_mute():
     global is_muted
     if not is_muted:
